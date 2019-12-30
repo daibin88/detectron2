@@ -113,16 +113,17 @@ def setup(args):
     """
     Create configs and perform basic setups.
     """
-    cfg = get_cfg()
-    cfg.merge_from_file(args.config_file)
-    cfg.merge_from_list(args.opts)
-    cfg.freeze()
-    default_setup(cfg, args)
+    cfg = get_cfg() #获取配置好的默认的参数的cfg
+    cfg.merge_from_file(args.config_file) #config_file为yaml配置文件，读入配置文件，对默认参数进行覆盖
+    cfg.merge_from_list(args.opts) #通过命令行获取参数，并对默认参数进行覆盖
+    cfg.freeze() #将超参数进行冻结，防止程序不小心修改
+    default_setup(cfg, args) #detectron2/engine/default.py中提供的一个默认配置函数
     return cfg
 
 
 def main(args):
-    cfg = setup(args)
+    ## 
+    cfg = setup(args)  ## 配置参数
 
     if args.eval_only:
         model = Trainer.build_model(cfg)
